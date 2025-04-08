@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F5 Contábil - Atendimento</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; color: #333; }
+    header { background: #004080; color: white; padding: 20px; text-align: center; }
+    .container { padding: 20px; max-width: 600px; margin: auto; }
+    h2 { color: #004080; margin-top: 30px; }
+    .btn { display: block; background: #0066cc; color: white; padding: 12px; margin: 10px 0; text-align: center; text-decoration: none; border-radius: 8px; font-weight: bold; }
+    form { background: white; padding: 20px; border-radius: 10px; margin-top: 20px; }
+    label { display: block; margin-top: 10px; }
+    input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    button { background: #004080; color: white; border: none; padding: 10px 15px; border-radius: 5px; margin-top: 15px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>F5 Contábil</h1>
+    <p>Atendimento Digital para Você</p>
+  </header>
+
+  <div class="container">
+    <a class="btn" href="https://wa.me/5591999999999" target="_blank">Falar no WhatsApp</a>
+    <a class="btn" href="#agendamento">Agendar Atendimento</a>
+    <a class="btn" href="#servicos">Ver Serviços</a>
+
+    <section id="servicos">
+      <h2>Serviços Disponíveis</h2>
+      <ul>
+        <li>Abertura de empresa</li>
+        <li>Contabilidade fiscal</li>
+        <li>Folha de pagamento</li>
+        <li>Consultoria financeira</li>
+        <li>Atendimento 100% online</li>
+      </ul>
+    </section>
+
+    <section id="agendamento">
+      <h2>Agendamento</h2>
+      <form>
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="servico">Serviço Desejado</label>
+        <select id="servico" name="servico" required>
+          <option value="">Selecione</option>
+          <option value="abertura">Abertura de empresa</option>
+          <option value="fiscal">Contabilidade fiscal</option>
+          <option value="folha">Folha de pagamento</option>
+          <option value="consultoria">Consultoria financeira</option>
+        </select>
+
+        <label for="data">Data Preferida</label>
+        <input type="date" id="data" name="data" required>
+
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+  </div>
+</body>
+</html>
