@@ -1,68 +1,73 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>F5 Contábil - Atendimento</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; color: #333; }
-    header { background: #004080; color: white; padding: 20px; text-align: center; }
-    .container { padding: 20px; max-width: 600px; margin: auto; }
-    h2 { color: #004080; margin-top: 30px; }
-    .btn { display: block; background: #0066cc; color: white; padding: 12px; margin: 10px 0; text-align: center; text-decoration: none; border-radius: 8px; font-weight: bold; }
-    form { background: white; padding: 20px; border-radius: 10px; margin-top: 20px; }
-    label { display: block; margin-top: 10px; }
-    input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
-    button { background: #004080; color: white; border: none; padding: 10px 15px; border-radius: 5px; margin-top: 15px; cursor: pointer; }
-  </style>
+  <title>F5 Contábil Ltda</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
   <header>
-    <h1>F5 Contábil</h1>
-    <p>Atendimento Digital para Você</p>
+    <nav class="menu">
+      <img src="assets/logo-f5.png" alt="Logo F5 Contábil" class="logo">
+      <ul>
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#sobre">Quem Somos</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+    <div class="hero" id="inicio">
+      <h1>Atualize seu negócio com a F5!</h1>
+      <p>Contabilidade digital para microempreendedores e pequenas empresas</p>
+    </div>
   </header>
 
-  <div class="container">
-    <a class="btn" href="https://wa.me/5591999999999" target="_blank">Falar no WhatsApp</a>
-    <a class="btn" href="#agendamento">Agendar Atendimento</a>
-    <a class="btn" href="#servicos">Ver Serviços</a>
+  <section id="sobre">
+    <h2>Quem Somos</h2>
+    <p>A <strong>F5 Contábil Ltda</strong> é uma empresa 100% digital, criada para ajudar novos microempreendedores e pequenas empresas a atualizarem seus negócios com soluções contábeis modernas, práticas e acessíveis.</p>
 
-    <section id="servicos">
-      <h2>Serviços Disponíveis</h2>
-      <ul>
-        <li>Abertura de empresa</li>
-        <li>Contabilidade fiscal</li>
-        <li>Folha de pagamento</li>
-        <li>Consultoria financeira</li>
-        <li>Atendimento 100% online</li>
-      </ul>
-    </section>
+    <div class="missao-visao-valores">
+      <div>
+        <h3><i class="fas fa-bullseye"></i> Missão</h3>
+        <p>Contribuir com o crescimento de micro e pequenas empresas oferecendo soluções contábeis modernas e personalizadas.</p>
+      </div>
+      <div>
+        <h3><i class="fas fa-eye"></i> Visão</h3>
+        <p>Ser referência em contabilidade digital na Região Metropolitana e expandir para todo o Brasil.</p>
+      </div>
+      <div>
+        <h3><i class="fas fa-heart"></i> Valores</h3>
+        <p>Transparência, responsabilidade, inovação, agilidade e proximidade com o cliente.</p>
+      </div>
+    </div>
+  </section>
 
-    <section id="agendamento">
-      <h2>Agendamento</h2>
-      <form>
-        <label for="nome">Nome</label>
-        <input type="text" id="nome" name="nome" required>
+  <section id="servicos">
+    <h2>Serviços</h2>
+    <div class="cards">
+      <div class="card"><i class="fas fa-file-invoice-dollar"></i><h3>Consultoria Fiscal</h3></div>
+      <div class="card"><i class="fas fa-balance-scale"></i><h3>Consultoria Tributária</h3></div>
+      <div class="card"><i class="fas fa-briefcase"></i><h3>Consultoria Trabalhista</h3></div>
+      <div class="card"><i class="fas fa-search"></i><h3>Auditorias</h3></div>
+    </div>
+  </section>
 
-        <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" required>
+  <section id="contato">
+    <h2>Contato</h2>
+    <p><strong>WhatsApp:</strong> <a href="https://wa.me/5591989691300">(91) 98969-1300</a></p>
+    <p><strong>Email:</strong> f5consultoriacontabil@gmail.com</p>
+    <form>
+      <input type="text" placeholder="Seu nome" required>
+      <input type="email" placeholder="Seu e-mail" required>
+      <textarea placeholder="Sua mensagem" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
 
-        <label for="servico">Serviço Desejado</label>
-        <select id="servico" name="servico" required>
-          <option value="">Selecione</option>
-          <option value="abertura">Abertura de empresa</option>
-          <option value="fiscal">Contabilidade fiscal</option>
-          <option value="folha">Folha de pagamento</option>
-          <option value="consultoria">Consultoria financeira</option>
-        </select>
-
-        <label for="data">Data Preferida</label>
-        <input type="date" id="data" name="data" required>
-
-        <button type="submit">Enviar</button>
-      </form>
-    </section>
-  </div>
+  <footer>
+    <img src="assets/logo-f5.png" alt="Logo F5 Contábil" width="100">
+    <p>&copy; 2025 F5 Contábil Ltda. Todos os direitos reservados.</p>
+  </footer>
 </body>
 </html>
