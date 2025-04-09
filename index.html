@@ -1,36 +1,100 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>F5 Contábil Ltda</title>
   <style>
     body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #fff; color: #333; }
-    header { background-color: #bfa46f; color: white; padding: 40px 20px; text-align: center; }
-    header img { max-height: 120px; margin-bottom: 10px; }
-    header h1 { margin: 0; font-size: 2.5em; }
-    header p { font-style: italic; font-size: 1.2em; }
-    nav { background-color: #f5f1e3; padding: 10px; text-align: center; position: sticky; top: 0; z-index: 100; }
-    nav a { margin: 0 10px; text-decoration: none; color: #bfa46f; font-weight: bold; }
-    nav a:hover { text-decoration: underline; }
-    .container { padding: 20px; max-width: 1000px; margin: auto; }
+    header { background-color: #bfa46f; color: white; padding: 20px; text-align: center; position: relative; }
+    header img { max-height: 100px; margin-bottom: 5px; }
+    header h1 { margin: 5px 0 0 0; font-size: 2.2em; }
+    header p { font-style: italic; font-size: 1.1em; }
+
+    .search-bar {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
+    .search-bar input {
+      padding: 8px;
+      border-radius: 4px;
+      border: none;
+      font-size: 14px;
+    }
+
+    nav {
+      background-color: #f5f1e3;
+      padding: 10px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #bfa46f;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
     h2 { color: #bfa46f; margin-top: 40px; }
+
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
     th { background-color: #f5f1e3; }
+
     ul.links { list-style: none; padding-left: 0; }
     ul.links li { margin-bottom: 10px; }
     ul.links li a { text-decoration: none; color: #004080; }
     ul.links li a:hover { text-decoration: underline; }
-    footer { text-align: center; padding: 20px; font-size: 0.9em; color: #777; }
+
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: #fff;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 30px;
+      z-index: 1000;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      text-decoration: none;
+    }
+
+    .whatsapp-float i {
+      line-height: 60px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <img src="logo-f5.png" alt="Logo F5 Contábil">
+    <img src="logo-f5.png" alt="Logo F5 Contábil" />
     <h1>F5 Contábil Ltda</h1>
     <p>Atualizando Negócios</p>
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar no site..." />
+    </div>
   </header>
 
   <nav>
@@ -45,80 +109,25 @@
   </nav>
 
   <div class="container">
-
-    <section id="tabelas">
-      <h2>Tabela INSS 2024</h2>
-      <table>
-        <tr><th>Faixa Salarial (R$)</th><th>Alíquota</th></tr>
-        <tr><td>até 1.412,00</td><td>7,5%</td></tr>
-        <tr><td>1.412,01 a 2.666,68</td><td>9%</td></tr>
-        <tr><td>2.666,69 a 4.000,03</td><td>12%</td></tr>
-        <tr><td>4.000,04 a 7.786,02</td><td>14%</td></tr>
-      </table>
-
-      <h2>Tabela IRRF 2024</h2>
-      <table>
-        <tr><th>Base de Cálculo (R$)</th><th>Alíquota</th><th>Parcela a Deduzir (R$)</th></tr>
-        <tr><td>até 2.112,00</td><td>Isento</td><td>-</td></tr>
-        <tr><td>2.112,01 a 2.826,65</td><td>7,5%</td><td>158,40</td></tr>
-        <tr><td>2.826,66 a 3.751,05</td><td>15%</td><td>370,40</td></tr>
-        <tr><td>3.751,06 a 4.664,68</td><td>22,5%</td><td>651,73</td></tr>
-        <tr><td>Acima de 4.664,68</td><td>27,5%</td><td>884,96</td></tr>
-      </table>
-
-      <h2>Salário-Família 2024</h2>
-      <table>
-        <tr><th>Remuneração até (R$)</th><th>Valor da Cota</th></tr>
-        <tr><td>até 1.819,26</td><td>R$ 62,04 por filho</td></tr>
-      </table>
-
-      <h2>Salário Mínimo 2024 (por região)</h2>
-      <table>
-        <tr><th>Região/Estado</th><th>Valor (R$)</th></tr>
-        <tr><td>Nacional</td><td>1.412,00</td></tr>
-        <tr><td>São Paulo</td><td>1.640,00</td></tr>
-        <tr><td>Rio de Janeiro</td><td>1.412,00 a 3.158,96</td></tr>
-        <tr><td>Paraná</td><td>1.856,94</td></tr>
-        <tr><td>Santa Catarina</td><td>1.521,00 a 1.740,00</td></tr>
-      </table>
-
-      <h2>Tabela Simples Nacional (Anexo I - Comércio)</h2>
-      <table>
-        <tr><th>Faixa</th><th>Receita Bruta (12 meses)</th><th>Alíquota</th><th>Dedução</th></tr>
-        <tr><td>1ª</td><td>até 180.000,00</td><td>4%</td><td>0,00</td></tr>
-        <tr><td>2ª</td><td>até 360.000,00</td><td>7,3%</td><td>5.940,00</td></tr>
-        <tr><td>3ª</td><td>até 720.000,00</td><td>9,5%</td><td>13.860,00</td></tr>
-        <tr><td>4ª</td><td>até 1.800.000,00</td><td>10,7%</td><td>22.500,00</td></tr>
-        <tr><td>5ª</td><td>até 3.600.000,00</td><td>14,3%</td><td>87.300,00</td></tr>
-        <tr><td>6ª</td><td>até 4.800.000,00</td><td>19%</td><td>378.000,00</td></tr>
-      </table>
-    </section>
-
-    <section id="legislacao">
-      <h2>Links Úteis de Legislação</h2>
-      <ul class="links">
-        <li><a href="https://www.gov.br/receitafederal" target="_blank">Receita Federal</a></li>
-        <li><a href="https://www8.receita.fazenda.gov.br/SimplesNacional" target="_blank">Simples Nacional</a></li>
-        <li><a href="https://www.gov.br/cfc/pt-br" target="_blank">CFC</a></li>
-        <li><a href="https://www.gov.br/empresas-e-negocios/pt-br/empreendedor" target="_blank">Portal do Empreendedor</a></li>
-        <li><a href="https://cav.receita.fazenda.gov.br/autenticacao/login" target="_blank">e-CAC</a></li>
-        <li><a href="https://www.sefa.pa.gov.br/" target="_blank">SEFA Pará</a></li>
-        <li><a href="https://www.jucepa.pa.gov.br/" target="_blank">JUCEPA</a></li>
-        <li><a href="https://www.nfe.fazenda.gov.br/portal/principal.aspx" target="_blank">Portal da NF-e</a></li>
-      </ul>
+    <section id="cliente">
+      <h2>Área do Cliente</h2>
+      <p>Acesse documentos, boletos e relatórios da sua empresa com segurança. (Em breve!)</p>
     </section>
 
     <section id="contato">
       <h2>Contato</h2>
-      <p>contato@f5contabil.com.br</p>
-      <p>(91) 99999-9999</p>
-      <a href="https://wa.me/5591999999999" target="_blank">Atendimento via WhatsApp</a>
+      <p><strong>E-mail:</strong> <a href="mailto:contato@f5contabil.com">contato@f5contabil.com</a></p>
+      <p><strong>WhatsApp:</strong> <a href="https://wa.me/5591999999999" target="_blank">(91) 99999-9999</a></p>
     </section>
-
   </div>
+
+  <a class="whatsapp-float" href="https://wa.me/5591999999999" target="_blank" title="Fale conosco no WhatsApp">
+    <i>📱</i>
+  </a>
 
   <footer>
     &copy; 2025 F5 Contábil Ltda - Todos os direitos reservados.
   </footer>
+
 </body>
 </html>
