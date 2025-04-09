@@ -1,226 +1,523 @@
-import zipfile
-import os
-
-# Criando a estrutura de arquivos
-base_path = "/mnt/data/f5-site"
-assets_path = os.path.join(base_path, "assets")
-os.makedirs(assets_path, exist_ok=True)
-
-# Criar os arquivos principais (index.html e style.css)
-index_html = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>F5 Contábil Ltda</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #fff; color: #333; }
+    header { background-color: #bfa46f; color: white; padding: 20px; text-align: center; }
+    header img { max-height: 100px; margin-bottom: 5px; }
+    nav { background-color: #f5f1e3; padding: 10px; text-align: center; position: sticky; top: 0; z-index: 100; }
+    nav ul { list-style: none; margin: 0; padding: 0; display: inline-flex; }
+    nav li { position: relative; }
+    nav a { display: block; padding: 10px 15px; text-decoration: none; color: #bfa46f; font-weight: bold; }
+    nav li:hover > a { background-color: #e6dfc9; }
+    .dropdown-content, .state-list, .regime-list {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 220px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 2;
+    }
+    .dropdown-content a, .state-list a, .regime-list a {
+      padding: 10px;
+      display: block;
+      color: #333;
+      text-align: left;
+    }
+    nav li:hover .dropdown-content { display: block; }
+    .state-list, .regime-list { left: 100%; top: 0; }
+
+    .form-container {
+      display: none;
+      padding: 20px;
+      max-width: 600px;
+      margin: 30px auto;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+    .form-container h3 { margin-top: 0; color: #bfa46f; }
+    .form-container input, .form-container textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form-container button {
+      background-color: #25d366;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #777;
+      margin-top: 40px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <nav class="menu">
-      <img src="assets/logo-f5.png" alt="Logo F5 Contábil" class="logo">
-      <ul>
-        <li><a href="#inicio">Início</a></li>
-        <li><a href="#servicos">Serviços</a></li>
-        <li><a href="#sobre">Quem Somos</a></li>
-        <li><a href="#contato">Contato</a></li>
+<header>
+  <img src="logo-f5.png" alt="Logo F5 Contábil" />
+  <h1>F5 Contábil Ltda</h1>
+  <p>Atualizando Negócios</p>
+</header>
+<nav>
+  <ul>
+    <li>
+      <a href="#">Consultoria ▾</a>
+      <ul class="dropdown-content">
+
+        <li>
+          <a href="#">Fiscal ▸</a>
+          <ul class="state-list">
+            <li>
+              <a href="#">PA ▸</a>
+              <ul class="regime-list">
+                <li><a href="#" onclick="openForm('Simples Nacional - PA')">Simples Nacional</a></li>
+                <li><a href="#" onclick="openForm('ICMS Normal - PA')">ICMS Normal</a></li>
+                <li><a href="#" onclick="openForm('Substituição Tributária - PA')">Substituição Tributária</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">SP ▸</a>
+              <ul class="regime-list">
+                <li><a href="#" onclick="openForm('GIA-ST - SP')">GIA-ST</a></li>
+                <li><a href="#" onclick="openForm('EFD ICMS/IPI - SP')">EFD ICMS/IPI</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">RJ ▸</a>
+              <ul class="regime-list">
+                <li><a href="#" onclick="openForm('ICMS - RJ')">ICMS</a></li>
+                <li><a href="#" onclick="openForm('DIME - RJ')">DIME</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Trabalhista / DP ▸</a>
+          <ul class="state-list">
+            <li>
+              <a href="#">PA ▸</a>
+              <ul class="regime-list">
+                <li><a href="#" onclick="openForm('eSocial - PA')">eSocial</a></li>
+                <li><a href="#" onclick="openForm('SEFIP - PA')">SEFIP</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">SP ▸</a>
+              <ul class="regime-list">
+                <li><a href="#" onclick="openForm('DIRF - SP')">DIRF</a></li>
+                <li><a href="#" onclick="openForm('GRRF - SP')">GRRF</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">RJ ▸</a>
+              <ul class="regime-list">
+                <li><a href="#" onclick="openForm('RAIS - RJ')">RAIS</a></li>
+                <li><a href="#" onclick="openForm('CAGED - RJ')">CAGED</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Contábil ▸</a>
+          <ul class="state-list">
+            <li>
+              <a href="#">Todos ▸</a>
+              <ul class="regime-list">
+                <li><a href="#" onclick="openForm('Escrituração Contábil')">Escrituração Contábil</a></li>
+                <li><a href="#" onclick="openForm('LALUR')">LALUR</a></li>
+                <li><a href="#" onclick="openForm('Balancetes')">Balancetes</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
       </ul>
-    </nav>
-    <div class="hero" id="inicio">
-      <h1>Atualize seu negócio com a F5!</h1>
-      <p>Contabilidade digital para microempreendedores e pequenas empresas</p>
-    </div>
-  </header>
+    </li>
+  </ul>
+</nav>
 
-  <section id="sobre">
-    <h2>Quem Somos</h2>
-    <p>A <strong>F5 Contábil Ltda</strong> é uma empresa 100% digital, criada para ajudar novos microempreendedores e pequenas empresas a atualizarem seus negócios com soluções contábeis modernas, práticas e acessíveis.</p>
+<div class="form-container" id="form-container">
+  <h3>Envie sua dúvida sobre <span id="form-topic"></span></h3>
+  <form onsubmit="sendToWhatsApp(); return false;">
+    <input type="text" id="nome" placeholder="Seu nome" required>
+    <input type="email" id="email" placeholder="Seu e-mail" required>
+    <textarea rows="4" id="mensagem" placeholder="Descreva sua dúvida" required></textarea>
+    <button type="submit">Enviar via WhatsApp</button>
+  </form>
+</div>
 
-    <div class="missao-visao-valores">
-      <div>
-        <h3><i class="fas fa-bullseye"></i> Missão</h3>
-        <p>Contribuir com o crescimento de micro e pequenas empresas oferecendo soluções contábeis modernas e personalizadas.</p>
-      </div>
-      <div>
-        <h3><i class="fas fa-eye"></i> Visão</h3>
-        <p>Ser referência em contabilidade digital na Região Metropolitana e expandir para todo o Brasil.</p>
-      </div>
-      <div>
-        <h3><i class="fas fa-heart"></i> Valores</h3>
-        <p>Transparência, responsabilidade, inovação, agilidade e proximidade com o cliente.</p>
-      </div>
-    </div>
-  </section>
+<footer>
+  &copy; 2025 F5 Contábil Ltda - Todos os direitos reservados.
+</footer>
 
-  <section id="servicos">
-    <h2>Serviços</h2>
-    <div class="cards">
-      <div class="card"><i class="fas fa-file-invoice-dollar"></i><h3>Consultoria Fiscal</h3></div>
-      <div class="card"><i class="fas fa-balance-scale"></i><h3>Consultoria Tributária</h3></div>
-      <div class="card"><i class="fas fa-briefcase"></i><h3>Consultoria Trabalhista</h3></div>
-      <div class="card"><i class="fas fa-search"></i><h3>Auditorias</h3></div>
-    </div>
-  </section>
+<script>
+  let selectedTopic = "";
 
-  <section id="contato">
-    <h2>Contato</h2>
-    <p><strong>WhatsApp:</strong> <a href="https://wa.me/5591989691300" target="_blank">(91) 98969-1300</a></p>
-    <p><strong>Email:</strong> f5consultoriacontabil@gmail.com</p>
-    <form>
-      <input type="text" placeholder="Seu nome" required>
-      <input type="email" placeholder="Seu e-mail" required>
-      <textarea placeholder="Sua mensagem" required></textarea>
-      <button type="submit">Enviar</button>
-    </form>
-  </section>
+  function openForm(topic) {
+    selectedTopic = topic;
+    document.getElementById('form-topic').textContent = topic;
+    document.getElementById('form-container').style.display = 'block';
+    window.scrollTo({
+      top: document.getElementById('form-container').offsetTop,
+      behavior: 'smooth'
+    });
+  }
 
-  <footer>
-    <img src="assets/logo-f5.png" alt="Logo F5 Contábil" width="100">
-    <p>&copy; 2025 F5 Contábil Ltda. Todos os direitos reservados.</p>
-  </footer>
+  function sendToWhatsApp() {
+    const nome = document.getElementById('nome').value;
+    const email = document.getElementById('email').value;
+    const mensagem = document.getElementById('mensagem').value;
+    const texto = `Olá, meu nome é ${nome}.%0AEmail: ${email}%0ADúvida sobre: ${selectedTopic}%0AMensagem: ${mensagem}`;
+    const numero = '5591989691300';
+    window.open(`https://wa.me/${numero}?text=${texto}`, '_blank');
+  }
+</script>
+
 </body>
-</html>"""
+</html>
+<li>
+  <a href="#">Fiscal ▸</a>
+  <ul class="state-list">
 
-style_css = """body {
-  font-family: Arial, sans-serif;
-  background-color: #fff;
-  color: #333;
-  margin: 0;
-  padding: 0;
-}
+    <li>
+      <a href="#">AC ▸</a>
+      <ul class="regime-list">
+        <li><a href="#" onclick="openForm('Simples Nacional - AC')">Simples Nacional</a></li>
+        <li><a href="#" onclick="openForm('ICMS - AC')">ICMS</a></li>
+        <li><a href="#" onclick="openForm('EFD ICMS/IPI - AC')">EFD ICMS/IPI</a></li>
+      </ul>
+    </li>
 
-.menu {
-  background-color: #fff;
-  color: #bfa046;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 30px;
-  border-bottom: 1px solid #eee;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+    <li>
+      <a href="#">AM ▸</a>
+      <ul class="regime-list">
+        <li><a href="#" onclick="openForm('Simples Nacional - AM')">Simples Nacional</a></li>
+        <li><a href="#" onclick="openForm('ICMS - AM')">ICMS</a></li>
+        <li><a href="#" onclick="openForm('GIA - AM')">GIA</a></li>
+      </ul>
+    </li>
 
-.menu ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-  margin: 0;
-  padding: 0;
-}
+    <li>
+      <a href="#">AP ▸</a>
+      <ul class="regime-list">
+        <li><a href="#" onclick="openForm('Simples Nacional - AP')">Simples Nacional</a></li>
+        <li><a href="#" onclick="openForm('ICMS - AP')">ICMS</a></li>
+        <li><a href="#" onclick="openForm('EFD ICMS/IPI - AP')">EFD ICMS/IPI</a></li>
+      </ul>
+    </li>
 
-.menu a {
-  color: #bfa046;
-  text-decoration: none;
-  font-weight: bold;
-}
+    <li>
+      <a href="#">PA ▸</a>
+      <ul class="regime-list">
+        <li><a href="#" onclick="openForm('Simples Nacional - PA')">Simples Nacional</a></li>
+        <li><a href="#" onclick="openForm('ICMS - PA')">ICMS</a></li>
+        <li><a href="#" onclick="openForm('Substituição Tributária - PA')">Substituição Tributária</a></li>
+      </ul>
+    </li>
 
-.hero {
-  text-align: center;
-  padding: 40px 20px;
-  background-color: #fefaf2;
-}
+    <li>
+      <a href="#">RO ▸</a>
+      <ul class="regime-list">
+        <li><a href="#" onclick="openForm('Simples Nacional - RO')">Simples Nacional</a></li>
+        <li><a href="#" onclick="openForm('ICMS - RO')">ICMS</a></li>
+        <li><a href="#" onclick="openForm('GIA-ST - RO')">GIA-ST</a></li>
+      </ul>
+    </li>
 
-.hero h1 {
-  color: #bfa046;
-}
+    <li>
+      <a href="#">RR ▸</a>
+      <ul class="regime-list">
+        <li><a href="#" onclick="openForm('Simples Nacional - RR')">Simples Nacional</a></li>
+        <li><a href="#" onclick="openForm('ICMS - RR')">ICMS</a></li>
+      </ul>
+    </li>
 
-section {
-  padding: 40px 20px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
+    <li>
+      <a href="#">TO ▸</a>
+      <ul class="regime-list">
+        <li><a href="#" onclick="openForm('Simples Nacional - TO')">Simples Nacional</a></li>
+        <li><a href="#" onclick="openForm('ICMS - TO')">ICMS</a></li>
+      </ul>
+    </li>
 
-.missao-visao-valores {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
+  </ul>
+</li>
+<li>
+  <a href="#">AL ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - AL')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - AL')">ICMS</a></li>
+    <li><a href="#" onclick="openForm('EFD ICMS/IPI - AL')">EFD ICMS/IPI</a></li>
+  </ul>
+</li>
 
-.missao-visao-valores div {
-  background-color: #fff9e5;
-  border: 1px solid #bfa046;
-  border-radius: 12px;
-  padding: 20px;
-  flex: 1 1 250px;
-}
+<li>
+  <a href="#">BA ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - BA')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - BA')">ICMS</a></li>
+    <li><a href="#" onclick="openForm('DOME - BA')">DOME</a></li>
+  </ul>
+</li>
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
+<li>
+  <a href="#">CE ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - CE')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - CE')">ICMS</a></li>
+    <li><a href="#" onclick="openForm('GIM - CE')">GIM</a></li>
+  </ul>
+</li>
 
-.card {
-  background-color: #fff9e5;
-  border: 1px solid #bfa046;
-  border-radius: 12px;
-  text-align: center;
-  padding: 20px;
-}
+<li>
+  <a href="#">MA ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - MA')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - MA')">ICMS</a></li>
+    <li><a href="#" onclick="openForm('EFD ICMS/IPI - MA')">EFD ICMS/IPI</a></li>
+  </ul>
+</li>
 
-.card i {
-  font-size: 30px;
-  color: #bfa046;
-  margin-bottom: 10px;
-}
+<li>
+  <a href="#">PB ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - PB')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - PB')">ICMS</a></li>
+  </ul>
+</li>
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 500px;
-  margin: 20px auto;
-}
+<li>
+  <a href="#">PE ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - PE')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - PE')">ICMS</a></li>
+    <li><a href="#" onclick="openForm('EFD - PE')">EFD</a></li>
+  </ul>
+</li>
 
-input, textarea {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
+<li>
+  <a href="#">PI ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - PI')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - PI')">ICMS</a></li>
+  </ul>
+</li>
 
-button {
-  background-color: #bfa046;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
+<li>
+  <a href="#">RN ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - RN')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - RN')">ICMS</a></li>
+    <li><a href="#" onclick="openForm('SINTEGRA - RN')">SINTEGRA</a></li>
+  </ul>
+</li>
 
-button:hover {
-  background-color: #a98f3f;
-}
+<li>
+  <a href="#">SE ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - SE')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - SE')">ICMS</a></li>
+  </ul>
+</li>
+<li>
+  <a href="#">DF ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - DF')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - DF')">ICMS</a></li>
+    <li><a href="#" onclick="openForm('EFD ICMS/IPI - DF')">EFD ICMS/IPI</a></li>
+  </ul>
+</li>
 
-footer {
-  text-align: center;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-top: 1px solid #eee;
-}"""
+<li>
+  <a href="#">GO ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - GO')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - GO')">ICMS</a></li>
+    <li><a href="#" onclick="openForm('Substituição Tributária - GO')">Substituição Tributária</a></li>
+  </ul>
+</li>
 
-# Salvar os arquivos
-with open(os.path.join(base_path, "index.html"), "w", encoding="utf-8") as f:
-    f.write(index_html)
+<li>
+  <a href="#">MT ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - MT')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - MT')">ICMS</a></li>
+    <li><a href="#" onclick="openForm('EFD ICMS/IPI - MT')">EFD ICMS/IPI</a></li>
+  </ul>
+</li>
 
-with open(os.path.join(base_path, "style.css"), "w", encoding="utf-8") as f:
-    f.write(style_css)
+<li>
+  <a href="#">MS ▸</a>
+  <ul class="regime-list">
+    <li><a href="#" onclick="openForm('Simples Nacional - MS')">Simples Nacional</a></li>
+    <li><a href="#" onclick="openForm('ICMS - MS')">ICMS</a></li>
+    <li><a href="#" onclick="openForm('SINTEGRA - MS')">SINTEGRA</a></li>
+  </ul>
+</li>
 
-# Copiar a logo enviada para a pasta assets
-original_logo = "/mnt/data/logo-f5.png"
-logo_destino = os.path.join(assets_path, "logo-f5.png")
-if os.path.exists(original_logo):
-    os.system(f"cp '{original_logo}' '{logo_destino}'")
-
-# Compactar tudo em um ZIP
-zip_path = "/mnt/data/f5-contabil-site.zip"
-with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-    for root, dirs, files in os.walk(base_path):
-        for file in files:
-            filepath = os.path.join(root, file)
-            arcname = os.path.relpath(filepath, base_path)
-            zipf.write(filepath, arcname)
-
-zip_path
+    <li><a href="#">MS ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - MS')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - MS')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - MS')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - MS')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - MS')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">MT ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - MT')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - MT')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - MT')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - MT')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - MT')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">PA ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - PA')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - PA')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - PA')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - PA')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - PA')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">PB ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - PB')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - PB')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - PB')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - PB')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - PB')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">PE ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - PE')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - PE')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - PE')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - PE')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - PE')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">PI ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - PI')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - PI')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - PI')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - PI')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - PI')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">PR ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - PR')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - PR')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - PR')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - PR')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - PR')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">RJ ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - RJ')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - RJ')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - RJ')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - RJ')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - RJ')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">RN ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - RN')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - RN')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - RN')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - RN')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - RN')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">RO ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - RO')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - RO')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - RO')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - RO')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - RO')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">RR ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - RR')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - RR')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - RR')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - RR')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - RR')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">RS ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - RS')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - RS')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - RS')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - RS')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - RS')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">SC ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - SC')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - SC')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - SC')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - SC')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - SC')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">SE ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - SE')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - SE')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - SE')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - SE')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - SE')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">SP ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - SP')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - SP')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - SP')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - SP')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - SP')">CAGED</a></li>
+    </ul></li>
+    <li><a href="#">TO ▸</a><ul class="regime-list">
+      <li><a href="#" onclick="openForm('eSocial - TO')">eSocial</a></li>
+      <li><a href="#" onclick="openForm('SEFIP - TO')">SEFIP</a></li>
+      <li><a href="#" onclick="openForm('RAIS - TO')">RAIS</a></li>
+      <li><a href="#" onclick="openForm('GRRF - TO')">GRRF</a></li>
+      <li><a href="#" onclick="openForm('CAGED - TO')">CAGED</a></li>
+    </ul></li>
+  </ul>
+</li>
+<li>
+  <a href="#">Contábil ▸</a>
+  <ul class="state-list">
+    <li>
+      <a href="#">Todos os Estados ▸</a>
+      <ul class="regime-list">
+        <li><a href="#" onclick="openForm('Escrituração Contábil')">Escrituração Contábil</a></li>
+        <li><a href="#" onclick="openForm('Livro Razão')">Livro Razão</a></li>
+        <li><a href="#" onclick="openForm('Livro Diário')">Livro Diário</a></li>
+        <li><a href="#" onclick="openForm('DRE - Demonstração de Resultados')">DRE</a></li>
+        <li><a href="#" onclick="openForm('Balanço Patrimonial')">Balanço Patrimonial</a></li>
+        <li><a href="#" onclick="openForm('LALUR / e-Lalur')">LALUR / e-Lalur</a></li>
+        <li><a href="#" onclick="openForm('SPED Contábil - ECD')">SPED Contábil - ECD</a></li>
+        <li><a href="#" onclick="openForm('SPED ECF - Escrituração Fiscal Contábil')">SPED ECF</a></li>
+        <li><a href="#" onclick="openForm('Controle de Ativo Imobilizado')">Controle de Ativo Imobilizado</a></li>
+        <li><a href="#" onclick="openForm('Apuração de Lucros')">Apuração de Lucros</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="#">Administrativa ▸</a>
+  <ul class="state-list">
+    <li>
+      <a href="#">Todos os Estados ▸</a>
+      <ul class="regime-list">
+        <li><a href="#" onclick="openForm('Abertura de Empresa')">Abertura de Empresa</a></li>
+        <li><a href="#" onclick="openForm('Atualização Cadastral')">Atualização Cadastral</a></li>
+        <li><a href="#" onclick="openForm('Alteração Contratual')">Alteração Contratual</a></li>
+        <li><a href="#" onclick="openForm('Encerramento de Empresa')">Encerramento de Empresa</a></li>
+        <li><a href="#" onclick="openForm('Consulta de CNPJ e Inscrição Estadual')">Consulta de CNPJ e IE</a></li>
+        <li><a href="#" onclick="openForm('Regularização Fiscal')">Regularização Fiscal</a></li>
+        <li><a href="#" onclick="openForm('Certidões Negativas')">Certidões Negativas</a></li>
+        <li><a href="#" onclick="openForm('Planejamento Empresarial')">Planejamento Empresarial</a></li>
+        <li><a href="#" onclick="openForm('Consultoria para MEI e ME')">Consultoria para MEI e ME</a></li>
+        <li><a href="#" onclick="openForm('Organização de Documentos e Fluxos')">Organização de Documentos</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
